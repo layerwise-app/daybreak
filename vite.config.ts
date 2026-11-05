@@ -10,6 +10,9 @@ import {
 } from '@layerwise/vite';
 
 export default defineConfig({
+  // The footer's copyright year, fixed at build time so the server and the
+  // browser render the same text.
+  define: { __BUILD_YEAR__: JSON.stringify(new Date().getFullYear()) },
   server: {
     host: process.env.HOSTNAME || '127.0.0.1',
     watch: {

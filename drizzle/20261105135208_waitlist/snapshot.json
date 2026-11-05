@@ -1,0 +1,215 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "id": "d191035f-8732-493d-bd6c-ed565728dfb8",
+  "prevIds": [
+    "cba1dd15-de03-4b32-8bd5-5b071f31052d"
+  ],
+  "ddl": [
+    {
+      "name": "app_secrets",
+      "entityType": "tables"
+    },
+    {
+      "name": "waitlist",
+      "entityType": "tables"
+    },
+    {
+      "name": "waitlist_attempts",
+      "entityType": "tables"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "app_secrets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "value",
+      "entityType": "columns",
+      "table": "app_secrets"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "waitlist"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "email",
+      "entityType": "columns",
+      "table": "waitlist"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "devices",
+      "entityType": "columns",
+      "table": "waitlist"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "position",
+      "entityType": "columns",
+      "table": "waitlist"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "owner_notified",
+      "entityType": "columns",
+      "table": "waitlist"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "waitlist"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "waitlist_attempts"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "visitor",
+      "entityType": "columns",
+      "table": "waitlist_attempts"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "waitlist_attempts"
+    },
+    {
+      "columns": [
+        "name"
+      ],
+      "nameExplicit": false,
+      "name": "app_secrets_pk",
+      "table": "app_secrets",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "waitlist_pk",
+      "table": "waitlist",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "waitlist_attempts_pk",
+      "table": "waitlist_attempts",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        {
+          "value": "created_at",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "waitlist_created_at_idx",
+      "entityType": "indexes",
+      "table": "waitlist"
+    },
+    {
+      "columns": [
+        {
+          "value": "visitor",
+          "isExpression": false
+        },
+        {
+          "value": "created_at",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "waitlist_attempts_visitor_idx",
+      "entityType": "indexes",
+      "table": "waitlist_attempts"
+    },
+    {
+      "columns": [
+        {
+          "value": "created_at",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "name": "waitlist_attempts_created_at_idx",
+      "entityType": "indexes",
+      "table": "waitlist_attempts"
+    },
+    {
+      "columns": [
+        "email"
+      ],
+      "nameExplicit": false,
+      "name": "waitlist_email_unique",
+      "entityType": "uniques",
+      "table": "waitlist"
+    }
+  ],
+  "renames": []
+}
