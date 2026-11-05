@@ -16,6 +16,7 @@
     "db:migrate": "node scripts/migrate-local.mjs",
     "lint": "oxlint",
     "test": "vitest run",
+    "check:screens": "node scripts/check-screens.mjs",
     "add-images": "node scripts/add-images.mjs",
     "share-images": "node scripts/share-images.mjs",
     "icons": "node scripts/icons.mjs"

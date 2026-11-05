@@ -71,7 +71,10 @@
 }
 .reschedule-hour span {
   position: absolute;
-  top: -0.55rem;
+  /* Centred on the 1px gridline above it. */
+  top: -0.5px;
+  translate: 0 -50%;
+  line-height: 1;
   left: 0;
   font-size: 0.6875rem;
   font-weight: 700;
@@ -994,7 +997,10 @@
 }
 .plan-hour span {
   position: absolute;
-  top: -0.55rem;
+  /* Centred on the 1px gridline above it. */
+  top: -0.5px;
+  translate: 0 -50%;
+  line-height: 1;
   left: 0;
   font-size: 0.6875rem;
   font-weight: 700;

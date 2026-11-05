@@ -112,6 +112,7 @@ Local** instead.
 pnpm check-types    # TypeScript
 pnpm lint           # oxlint
 pnpm test           # planner, quick add, reschedule, and waitlist rules
+pnpm check:screens <site address>   # hour labels line up with events in every device frame (needs Google Chrome)
 pnpm build
 pnpm add-images <files…> [--name <name>]
 pnpm share-images   # redraw public/og/*.png (needs Google Chrome)

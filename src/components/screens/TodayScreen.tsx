@@ -94,10 +94,11 @@ export function TodayScreen({
         <div className='ds-timeline'>
           <div
             className='ds-timeline-inner'
+            data-timeline='iphone-today'
             style={{ height: `${span + PAD * 2}em`, transform: `translateY(${-offset}em)` }}
           >
             {Array.from({ length: (HERO_END - HERO_START) / 60 + 1 }, (_, i) => (
-              <div key={i} className='ds-hour' style={{ top: `${PAD + i * HOUR}em` }}>
+              <div key={i} className='ds-hour' data-hour={7 + i} style={{ top: `${PAD + i * HOUR}em` }}>
                 <span>{String(7 + i).padStart(2, '0')}</span>
               </div>
             ))}
@@ -109,6 +110,7 @@ export function TodayScreen({
                 <div
                   key={e.id}
                   className='ds-block ds-event'
+                  data-event={e.id}
                   data-kind={e.kind}
                   data-state={state}
                   data-compact={minutes < 40 || undefined}

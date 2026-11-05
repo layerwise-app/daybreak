@@ -85,7 +85,7 @@ h1{margin-top:26px;font-size:76px;line-height:.98;font-weight:650;letter-spacing
 .status{padding:14px 0 0 30px;font-family:Num;font-weight:800;font-size:15px}
 .head{padding:26px 20px 0}.head b{display:block;font-size:28px;letter-spacing:-.035em}.head span{font-size:13px;color:${c.inkMuted}}
 .tl{position:absolute;inset:118px 0 0}
-.hr{position:absolute;left:0;right:0;border-top:1px solid rgb(28 26 23/.07)}.hr span{position:absolute;left:14px;top:-8px;background:#fffdf9;padding-right:4px;font-family:Num;font-weight:700;font-size:10px;color:#9a9287}
+.hr{position:absolute;left:0;right:0;border-top:1px solid rgb(28 26 23/.07)}.hr span{position:absolute;left:14px;top:-0.5px;transform:translateY(-50%);line-height:1;background:#fffdf9;padding-right:4px;font-family:Num;font-weight:700;font-size:10px;color:#9a9287}
 .ev{position:absolute;left:46px;right:12px;display:flex;justify-content:space-between;gap:6px;padding:4px 8px 4px 12px;border-radius:9px;font-size:12px;overflow:hidden}
 .ev::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:3px;border-radius:3px;background:var(--bar)}
 .ev b{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ev span{font-family:Num;font-weight:700;opacity:.8}

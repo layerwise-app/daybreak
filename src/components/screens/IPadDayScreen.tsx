@@ -49,9 +49,9 @@ export function IPadDayScreen() {
           <span style={{ fontSize: '1.55em', fontWeight: 700, letterSpacing: '-0.03em' }}>{sampleDay.weekday}</span>
           <span style={{ fontSize: '0.9em', color: 'var(--ds-muted)' }}>{sampleDay.dateLabel}</span>
         </div>
-        <div style={{ position: 'relative', marginTop: '1.3em', height: `${y(END)}em`, fontSize: '1em' }}>
+        <div data-timeline='ipad-day' style={{ position: 'relative', marginTop: '1.3em', height: `${y(END)}em`, fontSize: '1em' }}>
           {Array.from({ length: (END - START) / 60 + 1 }, (_, i) => (
-            <div key={i} className='ds-hour' style={{ top: `${i * HOUR}em` }}>
+            <div key={i} className='ds-hour' data-hour={8 + i} style={{ top: `${i * HOUR}em` }}>
               <span style={{ left: 0 }}>{String(8 + i).padStart(2, '0')}</span>
             </div>
           ))}
@@ -59,6 +59,7 @@ export function IPadDayScreen() {
             <div
               key={e.id}
               className='ds-block ds-event'
+              data-event={e.id}
               data-kind={e.kind}
               data-state={DEMO_NOW >= e.end ? 'past' : DEMO_NOW >= e.start ? 'now' : 'next'}
               data-compact={e.end - e.start < 50 || undefined}

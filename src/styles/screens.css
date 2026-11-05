@@ -394,7 +394,10 @@
 .ds-hour span {
   position: absolute;
   left: 0.95em;
-  top: -0.48em;
+  /* Centred on the 1px gridline above it, whatever the label's size. */
+  top: -0.5px;
+  translate: 0 -50%;
+  line-height: 1;
   padding-right: 0.3em;
   background: var(--ds-bg);
   font-family: var(--font-site-numerals);

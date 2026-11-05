@@ -5,8 +5,14 @@ import { WindowDots } from './bits';
 
 const START = 8 * 60;
 const END = 21 * 60;
-const HOUR = 2.75;
-const y = (m: number) => ((m - START) / 60) * HOUR;
+const HOURS = Array.from({ length: (END - START) / 60 + 1 }, (_, i) => START / 60 + i);
+/**
+ * Positions on the time grid, as a share of its height. Labels, gridlines,
+ * events, and the now line all use these, so they line up at every size and
+ * whatever font size each element has.
+ */
+const at = (minutes: number) => `${((minutes - START) / (END - START)) * 100}%`;
+const length = (minutes: number) => `${(minutes / (END - START)) * 100}%`;
 const MONTH = Array.from({ length: 35 }, (_, i) => i - 0); // March 2027 starts on a Monday
 
 /** Mac: the whole week in one window. Thursday is Ana's sample day. */
@@ -165,75 +171,89 @@ export function MacWeekScreen() {
               </span>
             ))}
           </div>
-          <div style={{ position: 'relative', flex: 1, display: 'grid', gridTemplateColumns: '2.4em repeat(7, 1fr)', padding: '0.3em 0.8em 0 0.4em' }}>
-            <div style={{ position: 'relative' }}>
-              {Array.from({ length: (END - START) / 60 + 1 }, (_, i) => (
-                <span
-                  key={i}
-                  className='ds-num'
-                  style={{ position: 'absolute', top: `${i * HOUR - 0.35}em`, fontSize: '0.56em', fontWeight: 700, color: 'var(--ds-faint)' }}
+          {/* Room above 08 and below 21 for their labels; the grid fills the rest. */}
+          <div style={{ position: 'relative', flex: 1, minHeight: 0 }}>
+            <div
+              data-timeline='mac-week'
+              style={{
+                position: 'absolute',
+                inset: '0.7em 0.8em 0.8em 0.4em',
+                display: 'grid',
+                gridTemplateColumns: '2.4em repeat(7, 1fr)',
+                gridTemplateRows: '1fr'
+              }}
+            >
+              {HOURS.map((hour) => (
+                <div
+                  key={hour}
+                  className='ds-hour'
+                  data-hour={hour}
+                  style={{ top: at(hour * 60), left: '2.4em', right: 0 }}
                 >
-                  {String(8 + i).padStart(2, '0')}
-                </span>
+                  <span style={{ left: 'auto', right: '100%', paddingRight: '0.55em', fontSize: '0.56em', background: 'none' }}>
+                    {String(hour).padStart(2, '0')}
+                  </span>
+                </div>
+              ))}
+              <span />
+              {week.map((d) => (
+                <div
+                  key={d.label}
+                  style={{
+                    position: 'relative',
+                    borderLeft: '1px solid var(--ds-line)',
+                    background: d.label === 'Thu' ? 'rgb(255 217 119 / 0.08)' : undefined
+                  }}
+                >
+                  {d.events.map((e) => (
+                    <div
+                      key={e.title + e.start}
+                      className='ds-block ds-event'
+                      data-event={d.label === 'Thu' && 'id' in e ? String(e.id) : undefined}
+                      data-kind={e.kind}
+                      data-compact={e.endM - e.startM < 50 || undefined}
+                      style={{
+                        top: at(e.startM),
+                        height: length(e.endM - e.startM),
+                        left: '0.15em',
+                        right: '0.2em',
+                        minHeight: '1em',
+                        fontSize: '0.86em',
+                        borderRadius: '0.4em'
+                      }}
+                    >
+                      <div className='ds-block-text'>
+                        <span className='ds-block-title'>{e.title}</span>
+                      </div>
+                    </div>
+                  ))}
+                  {d.label === 'Thu' &&
+                    dayTodos.map((t) =>
+                      t.start === null ? null : (
+                        <div
+                          key={t.id}
+                          className='ds-block ds-todo'
+                          style={{
+                            top: at(t.start),
+                            height: length(t.minutes),
+                            left: '0.15em',
+                            right: '0.2em',
+                            minHeight: '0.8em',
+                            fontSize: '0.86em',
+                            borderRadius: '0.35em',
+                            padding: '0 0.35em'
+                          }}
+                        >
+                          <span className='ds-block-title' style={{ fontSize: '0.62em' }}>
+                            {t.title}
+                          </span>
+                        </div>
+                      )
+                    )}
+                  {d.label === 'Thu' && <div className='ds-now' style={{ top: at(DEMO_NOW), left: 0, right: 0 }} />}
+                </div>
               ))}
             </div>
-            {week.map((d) => (
-              <div
-                key={d.label}
-                style={{
-                  position: 'relative',
-                  borderLeft: '1px solid var(--ds-line)',
-                  background: d.label === 'Thu' ? 'rgb(255 217 119 / 0.08)' : undefined,
-                  backgroundImage: `repeating-linear-gradient(180deg, var(--ds-line) 0 1px, transparent 1px ${HOUR}em)`
-                }}
-              >
-                {d.events.map((e) => (
-                  <div
-                    key={e.title + e.start}
-                    className='ds-block ds-event'
-                    data-kind={e.kind}
-                    data-compact={e.endM - e.startM < 50 || undefined}
-                    style={{
-                      top: `${y(e.startM)}em`,
-                      height: `${((e.endM - e.startM) / 60) * HOUR}em`,
-                      left: '0.15em',
-                      right: '0.2em',
-                      minHeight: '1em',
-                      fontSize: '0.86em',
-                      borderRadius: '0.4em'
-                    }}
-                  >
-                    <div className='ds-block-text'>
-                      <span className='ds-block-title'>{e.title}</span>
-                    </div>
-                  </div>
-                ))}
-                {d.label === 'Thu' &&
-                  dayTodos.map((t) =>
-                    t.start === null ? null : (
-                      <div
-                        key={t.id}
-                        className='ds-block ds-todo'
-                        style={{
-                          top: `${y(t.start)}em`,
-                          height: `${(t.minutes / 60) * HOUR}em`,
-                          left: '0.15em',
-                          right: '0.2em',
-                          minHeight: '0.8em',
-                          fontSize: '0.86em',
-                          borderRadius: '0.35em',
-                          padding: '0 0.35em'
-                        }}
-                      >
-                        <span className='ds-block-title' style={{ fontSize: '0.62em' }}>
-                          {t.title}
-                        </span>
-                      </div>
-                    )
-                  )}
-                {d.label === 'Thu' && <div className='ds-now' style={{ top: `${y(DEMO_NOW)}em`, left: 0, right: 0 }} />}
-              </div>
-            ))}
           </div>
         </main>
       </div>
