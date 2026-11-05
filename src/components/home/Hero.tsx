@@ -5,7 +5,7 @@ import { TodayScreen } from '~/components/screens/TodayScreen';
 import { SiteLink } from '~/components/site/SiteLink';
 import { home } from '~/content/home';
 import { sampleDay } from '~/content/sample-day';
-import { useActive, useMediaQuery, useReducedMotion } from '~/hooks/use-motion';
+import { useActive, useMediaQuery, useReducedMotion, useSeen } from '~/hooks/use-motion';
 import {
   HERO_END,
   HERO_MIDDAY,
@@ -34,11 +34,14 @@ export function Hero() {
   const content = home.hero;
   const trackRef = useRef<HTMLDivElement>(null);
   const skyRef = useRef<HTMLDivElement>(null);
+  const phoneRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const desktop = useMediaQuery('(min-width: 1024px)');
   // Matches the CSS that makes the hero tall and sticky.
   const scrollMode = desktop && !reduced;
   const active = useActive(skyRef);
+  // Phones and tablets wait until at least half of the phone frame is on screen.
+  const phoneSeen = useSeen(phoneRef, 0.5, !scrollMode && !reduced);
   const [time, setNow] = useState(HERO_START);
   const [autoplay, setAutoplay] = useState(true);
   const [scrubbed, setScrubbed] = useState(false);
@@ -71,10 +74,11 @@ export function Hero() {
     };
   }, [scrollMode]);
 
-  // Phones and tablets: play once on load, from 7:00 to midday. Pauses while
-  // off screen or the tab is hidden, and stops as soon as the visitor scrubs.
+  // Phones and tablets: play once, from 7:00 to midday, starting when half of
+  // the phone is in view. Pauses while off screen or the tab is hidden, and
+  // stops as soon as the visitor scrubs.
   useEffect(() => {
-    if (scrollMode || reduced || !autoplay || !active) return;
+    if (scrollMode || reduced || !autoplay || !active || !phoneSeen) return;
     const duration = 5600;
     const raf = { id: 0, start: 0 };
     const tick = (ts: number) => {
@@ -88,12 +92,13 @@ export function Hero() {
     const begin = () => {
       raf.id = requestAnimationFrame(tick);
     };
-    const delay = window.setTimeout(begin, elapsed.current ? 0 : 600);
+    // A short beat after the phone comes into view, so the first move is seen.
+    const delay = window.setTimeout(begin, elapsed.current ? 0 : 300);
     return () => {
       window.clearTimeout(delay);
       cancelAnimationFrame(raf.id);
     };
-  }, [scrollMode, reduced, autoplay, active]);
+  }, [scrollMode, reduced, autoplay, active, phoneSeen]);
 
   const scrub = useCallback(
     (minutes: number) => {
@@ -165,7 +170,7 @@ export function Hero() {
                   );
                 })}
               </div>
-              <IPhoneFrame label={content.phoneLabel} className='hero-phone'>
+              <IPhoneFrame ref={phoneRef} label={content.phoneLabel} className='hero-phone'>
                 <ScreenSlot id='hero-today' sizes='300px' priority>
                   <TodayScreen
                     now={now}

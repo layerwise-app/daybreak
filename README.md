@@ -26,7 +26,10 @@ Built with TanStack Start, React, Tailwind CSS, and a D1 database, on Layerwise.
 Change the text in `src/content/home.ts` (home page) or `src/site.config.ts`
 (name, tagline, nav, buttons). Components read from these files, so no component
 needs editing. Changing Ana's events or to-dos in `src/content/sample-day.ts`
-updates the hero phone, the tiles, and Plan my day together.
+updates the hero phone, the tiles, and Plan my day together. Each to-do has a
+`kind`: `work` to-dos stay inside `workHours`, and `personal` ones may also go
+in the evening; nothing starts after `lastStart`. Run `pnpm test` after
+changing the day: it checks every plan Shuffle can produce against these rules.
 
 After changing a page title or the hero headline, run `pnpm share-images` to
 redraw the link preview images in `public/og/`.

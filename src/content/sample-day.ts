@@ -6,6 +6,8 @@
 
 export type EventKind = 'work' | 'social' | 'health' | 'focus';
 export type Priority = 'high' | 'medium' | 'low';
+/** Work stays inside work hours; personal errands may also go in the evening. */
+export type TodoKind = 'work' | 'personal';
 
 export type DayEvent = {
   id: string;
@@ -22,6 +24,7 @@ export type Todo = {
   /** How long it takes, in minutes. */
   minutes: number;
   priority: Priority;
+  kind: TodoKind;
   /** Optional window the planner must respect, like `before: '11:00'`. */
   after?: string;
   before?: string;
@@ -45,6 +48,10 @@ export const sampleDay = {
   /** The hours the planner may use for to-dos. */
   dayStart: '08:30',
   dayEnd: '21:30',
+  /** Work to-dos start and finish inside these hours. */
+  workHours: { start: '08:30', end: '18:00' },
+  /** No to-do starts later than this. */
+  lastStart: '20:30',
   /** Minutes kept free around events and between to-dos. */
   buffer: 5,
 
@@ -104,6 +111,7 @@ export const sampleDay = {
       title: 'Finish review deck',
       minutes: 45,
       priority: 'high',
+      kind: 'work',
       before: '11:00',
       hint: 'Before design review'
     },
@@ -111,25 +119,29 @@ export const sampleDay = {
       id: 'lena',
       title: 'Reply to Lena’s notes',
       minutes: 20,
-      priority: 'high'
+      priority: 'high',
+      kind: 'work'
     },
     {
       id: 'notes',
       title: 'Write release notes',
       minutes: 30,
-      priority: 'medium'
+      priority: 'medium',
+      kind: 'work'
     },
     {
       id: 'flights',
       title: 'Book Sydney flights',
       minutes: 15,
-      priority: 'medium'
+      priority: 'medium',
+      kind: 'work'
     },
     {
       id: 'landlord',
       title: 'Call landlord re heater',
       minutes: 15,
       priority: 'medium',
+      kind: 'personal',
       before: '17:00',
       hint: 'Office hours'
     },
@@ -138,6 +150,7 @@ export const sampleDay = {
       title: 'Groceries for the week',
       minutes: 30,
       priority: 'low',
+      kind: 'personal',
       after: '17:00',
       hint: 'After work'
     },
@@ -145,7 +158,8 @@ export const sampleDay = {
       id: 'gift',
       title: 'Order Inés’s birthday gift',
       minutes: 20,
-      priority: 'low'
+      priority: 'low',
+      kind: 'personal'
     }
   ] satisfies Todo[]
 };

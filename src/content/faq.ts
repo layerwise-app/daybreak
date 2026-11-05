@@ -21,7 +21,7 @@ export const faq: FaqEntry[] = [
   {
     question: 'How does Plan my day decide where things go?',
     answer:
-      'It finds the free time between your events, then places to-dos by priority and length, keeping a few minutes clear around everything. It’s plain rules, not AI, so the same day always gives the same plan. Shuffle shows you another plan that also fits.'
+      'It finds the free time between your events, then places to-dos by priority and length, keeping a few minutes clear around everything. High-priority work comes first, work stays inside your work hours, and only errands go into the evening. It’s plain rules, not AI, so the same day always gives the same plan. Shuffle shows you another plan that follows the same rules.'
   },
   {
     question: 'Where are my plans stored?',

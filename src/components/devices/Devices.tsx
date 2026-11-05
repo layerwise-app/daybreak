@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import { cn } from '~/lib/utils';
 
 type DeviceProps = {
@@ -7,12 +7,13 @@ type DeviceProps = {
   className?: string;
   style?: CSSProperties;
   children: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 };
 
 /** An iPhone drawn in CSS. Set `font-size` to scale it (19.65em wide). */
-export function IPhoneFrame({ label, className, style, children }: DeviceProps) {
+export function IPhoneFrame({ label, className, style, children, ref }: DeviceProps) {
   return (
-    <div className={cn('device iphone', className)} style={style} role='img' aria-label={label}>
+    <div ref={ref} className={cn('device iphone', className)} style={style} role='img' aria-label={label}>
       <div className='iphone-screen'>
         <div className='iphone-island' />
         {children}

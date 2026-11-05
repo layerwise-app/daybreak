@@ -56,3 +56,27 @@ export function useActive(ref: RefObject<Element | null>): boolean {
   const visible = usePageVisible();
   return inView && visible;
 }
+
+/**
+ * Becomes true the first time at least `share` of the element's height is on
+ * screen, and stays true. An element taller than the screen counts once that
+ * share of the screen is filled. Waits while `enabled` is false.
+ */
+export function useSeen(ref: RefObject<Element | null>, share = 0.5, enabled = true): boolean {
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || seen || !enabled) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const screen = entry.rootBounds?.height ?? window.innerHeight;
+        const needed = share * Math.min(entry.boundingClientRect.height, screen);
+        if (entry.isIntersecting && entry.intersectionRect.height >= needed) setSeen(true);
+      },
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, share, seen, enabled]);
+  return seen;
+}
